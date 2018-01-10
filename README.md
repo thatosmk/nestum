@@ -1,5 +1,11 @@
-# My vimrc
+# vimrsee
 This is my latest vimrc file.
 
-# inspired by
+## Installation
+The bash script will install *pathogen.vim* and *vundle.vim*
+
+
+## Inspired by
 ...
+
+## Contribution
