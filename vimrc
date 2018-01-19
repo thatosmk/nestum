@@ -1,14 +1,18 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
+filetype plugin on          " plugins are enabled
 
 " set the runtime path to include Vundle and initialize
-set rtp+=/home/tetris/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/Vundle.vim
 " call vundle#begin()
  " alternatively, pass a path where Vundle should install plugins
-call vundle#begin('/home/tetris/.vim/bundle')
+call vundle#begin('~/.vim/bundle')
 
  " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-rails'
 
 
  " The following are examples of different formats supported.
@@ -29,7 +33,7 @@ Plugin 'tpope/vim-fugitive'
  " Plugin 'ascenator/L9', {'name': 'newL9'}
 
  " for Ruby snippets
-Plugin 'garbas/vim-snipmate'
+ " Plugin 'garbas/vim-snipmate'
  " vim html by mats
 Plugin 'mattn/emmet-vim'
  " All of your Plugins must be added before the following line
