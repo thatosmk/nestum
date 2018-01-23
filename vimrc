@@ -1,6 +1,5 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
-filetype plugin on          " plugins are enabled
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -13,6 +12,10 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-rails'
+" nerdtree plugin for vim
+
+" forces tmux splits to behave like vim splits
+Plugin 'christoomey/vim-tmux-navigator'
 
 
  " The following are examples of different formats supported.
