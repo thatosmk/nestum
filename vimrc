@@ -16,7 +16,10 @@ Plugin 'tpope/vim-rails'
 
 " forces tmux splits to behave like vim splits
 Plugin 'christoomey/vim-tmux-navigator'
-
+Plugin 'scrooloose/nerdtree'
+Plugin 'itchyny/lightline.vim'
+Plugin 'mattn/emmet-vim'
+Plugin 'vim-ruby/vim-ruby'
 
  " The following are examples of different formats supported.
  " Keep Plugin commands between vundle#begin/end.
@@ -38,7 +41,6 @@ Plugin 'tpope/vim-fugitive'
  " for Ruby snippets
  " Plugin 'garbas/vim-snipmate'
  " vim html by mats
-Plugin 'mattn/emmet-vim'
  " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -61,7 +63,10 @@ call pathogen#helptags()
 " show language syntax highlighted
 syntax on
 
+" map keys
 map ; :
+
+map <C-n> :NERDTreeToggle<CR>
 
 " show numbers on the LSP
 set number
