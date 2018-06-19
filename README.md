@@ -2,9 +2,14 @@
 This is my latest vimrc file.
 
 ## Installation
-The bash script will install *pathogen.vim* and *vundle.vim*
+Run the ```install.sh``` script and it will install all the requirement too.
 
+## Dependencies
+Requires;
+* pathogen.vim
+* Vundle
 
+After installation you are ready to use it.
 ## Inspired by
 ...
 
