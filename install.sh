@@ -1,28 +1,45 @@
 #!/bin/bash
 
+set -euo pipefail
+
+# Helper function to print step titles
+log() { echo -e "\n\033[1;32m==>\033[0m \033[1m$1\033[0m"; }
+
+log "Updating system packages..."
+
 # update
 sudo apt update && sudo apt upgrade -y
 
 # install git & then zsh (https://ohmyz.sh/)
-sudo apt install git git-core
+log "Installing prerequisites (git curl vim wget zsh)"
+sudo apt install -y git zsh curl wget vim
 
-sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    log "Installing oh my zsh"
+    sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" --unattended
+else
+    log "Oh my zsh is already installed, skipping..."
+fi
 
-# install my zshrc 
-cp src/zshrc ~/.zshrc
-source ~/.zshrc
 
-# install vim
-sudo apt install vim
+log "Deploying configuration files..."
+if [ -f "src/zshrc" ]; then
+    cp src/zshrc ~/.zshrc
+fi
 
-# install pathogen and vundle (requires git to be installed)
-mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+if [ -f "src/vimrc" ]; then
+    cp src/vimrc ~/.vimrc
+fi
 
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# Install vundle if not already installed
+if [ ! -d "$HOME/.vim/bundle/Vundle.vim" ]; then
+    log "Installing Vundle..."
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+else
+    log "Vundle is already installed, skipping..."
+fi
 
-# setup up the config file
-cp src/vimrc ~/.vimrc
+log "Installing vim plugins"
+vim +PluginInstall +qall
 
-# source the config file
-source ~/.vimrc
+log "Setup complte! Change your default shell with: chsh -s \$(which zsh)"
