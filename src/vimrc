@@ -1,162 +1,133 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-filetype plugin on          " plugins are enabled
+" 1. VUNDLE PLUGIN MANAGER CONFIGURATION
+" ============================================================================
+set nocompatible              " Be iMproved, required
+filetype off                  " Required for Vundle initialization
 
-" set the runtime path to include Vundle and initialize
+" Set the runtime path to include Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
-" call vundle#begin()
- " alternatively, pass a path where Vundle should install plugins
 call vundle#begin('~/.vim/bundle')
 
- " let Vundle manage Vundle, required
+" Let Vundle manage Vundle (Required)
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'kien/ctrlp.vim'
+
+" Active Plugins
+Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } } " Core FZF binary
+Plugin 'junegunn/fzf.vim'                             " FZF Vim wrapper plugin
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-rails'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'sainnhe/everforest'
+Plugin 'voldikss/vim-floaterm'
 Plugin 'tpope/vim-surround'
 Plugin 'mattn/emmet-vim'
 Plugin 'Yggdroot/indentLine'
 
+call vundle#end()            " Required
+filetype plugin indent on    " Enable loading indent files for specific file types
 
- " The following are examples of different formats supported.
- " Keep Plugin commands between vundle#begin/end.
- " plugin on GitHub repo
- " plugin from http://vim-scripts.org/vim/scripts.html
- " Plugin 'L9'
- " Git plugin not hosted on GitHub
- "Plugin 'git://git.wincent.com/command-t.git'
- " git repos on your local machine (i.e. when working on your own plugin)
- "Plugin 'file:///home/gmarik/path/to/plugin'
- " The sparkup vim script is in a subdirectory of this repo called vim.
- " Pass the path to set the runtimepath properly.
- "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
- " Install L9 and avoid a Naming conflict if you've already installed a
- " different version somewhere else.
- " Plugin 'ascenator/L9', {'name': 'newL9'}
+" ============================================================================
+" 2. GENERAL SETTINGS (UI & Behavior)
+" ============================================================================
+syntax on                    " Enable syntax highlighting
+set number                   " Show absolute line number on current line
+set rnu                      " Use relative line numbers for easy jumping
+set ruler                    " Always show the cursor's current position
+set laststatus=2             " Always show the status line
+set tw=120                   " Set text-width to 120 characters
+set wrap                     " Wrap long lines visually
 
- " for Ruby snippets
- " Plugin 'garbas/vim-snipmate'
- " vim html by mats
- " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" show existing tab with 4 spaces width
-set tabstop=4
-" " when indenting with '>', use 4 spaces width
-set shiftwidth=4
-" " On pressing tab, insert 4 spaces
-set expandtab
+" Status line
+set statusline=%F\                    " FilePath
+set statusline+=%m\                   " Modified flag [+]
+set statusline+=%=                    " Alignment separator ()switch to right side)
+set statusline+=%{FugitiveStatusline()}  " Git branch (provided by vim-fugituve)
+set statusline+=\ [%Y]                   " File type (e.g. [ruby], [html])
+set statusline+=\ %l:%c\
 
- " To ignore plugin indent changes, instead use:
-filetype plugin on
- "
- " Brief help
-":PluginList       " - lists configured plugins
-" :PluginInstall    " - installs plugins; append `!` to update or just
-" :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean     " - confirms removal of unused plugins; append `!` to
-" auto-approve removal
-" "
-" " see :h vundle for more details or wiki for FAQ
-" " Put your non-Plugin stuff after this line
-execute pathogen#infect()
-call pathogen#helptags()
 
-" show language syntax highlighted
-syntax on
+"Search Settings
+set ignorecase               " Ignore case when searching
+set smartcase                " ...unless search contains an uppercase letter
+set incsearch                " Show search matches dynamically as you type
+set magic                    " Turn on 'magic' for regular expressions
+set showmatch                " Briefly flash matching brackets
 
-map ; :
+" Tab & Indentation Settings
+set tabstop=4                " Number of visual spaces per TAB
+set shiftwidth=4             " Number of spaces to use for autoindent
+set expandtab                " Convert TABs to spaces
+set ai                       " Copy indent from current line when starting a new one
 
-" map nerdtree to just c-n
-map <C-n> :NERDTreeToggle<CR>
+" History & Performance
+set history=500              " Remember up to 500 commands
+set wildmenu                 " Visual autocomplete menu for command mode
 
-" map split nav 
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-
-" show numbers on the LSP
-set number
-
-" add completeoption
-"
-" turn on wildmenu
-set wildmenu
-set rnu
-
-" set the colorscheme
-" colorscheme solarized
-
-" set backgroung to dark= for the dark verison
-set background=dark
-
-" set indent overwrite conceal colour
-" let g:indentLine_setColors = 0
-" map :indentlinestoggle to Ctrl+l
-map <C-i> :IndentLinesToggle<CR>
-
-" use | as an indent char
-let g:indentLine_char = '|'
-
-" set text-width
-set tw=120
-
-" set background to light = for the light version
-" set background=light
-"
+" Theme & GUI Settings
 if has('gui_running')
     set background=light
+
+    " --- FORCE FULL SCREEN ON STARTUP ---
+    set lines=999 columns=999
+    set fullscreen
 else
     set background=dark
 endif
+" colorscheme solarized       " Uncomment this if you install the solarized plugin
+colorscheme everforest
 
-" always show the current position
-set ruler
+" ============================================================================
+" 3. KEY MAPPINGS
+" ============================================================================
+" Set your leader key (defaults to \, change to space if preferred)
+let mapleader = "\\"
 
-" ignore case when searching
-set ignorecase
+" Quick command mode
+map ; :
 
-" make search act like search in modern browsers
-set incsearch
+" Split Navigation (Ctrl + h/j/k/l)
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
 
-" For regular expressions turn on magic
-set magic
+" Toggle NERDTree with Ctrl + n
+nnoremap <C-n> :NERDTreeToggle<CR>
 
-" show brackets match
-set showmatch
+" Spell Checking Shortcuts
+nnoremap <leader>ss :setlocal spell!<CR>
+nnoremap <leader>sn ]s
+nnoremap <leader>sp [s
+nnoremap <leader>sa zg
+nnoremap <leader>s? z=
 
-" set auto indent
-set ai
+" ============================================================================
+" 4. PLUGIN-SPECIFIC CONFIGURATIONS
+" ============================================================================
 
+" --- FZF Config ---
+" Map Ctrl+P to search for files in the current directory
+nnoremap <C-p> :Files<CR>
+" Map Leader+b to search through open buffers
+nnoremap <leader>b :Buffers<CR>
 
-" set wrap lines
-set wrap
+" --- IndentLine Config ---
+let g:indentLine_char = '|'
+" Changed from <C-i> because Ctrl+I overrides the Tab key behavior in Vim
+nnoremap <leader>i :IndentLinesToggle<CR>
 
-" Always show the status line
-set laststatus=2
+" --- Emmet Config ---
+let g:user_emmet_mode = 'a'  " Enable Emmet functions in all modes
 
+" --- Floaterm Configuration ---
+" Toggle the terminal with Ctrl + t (in both normal and terminal modes)
+nnoremap <C-t> :FloatermToggle<CR>
+tnoremap <C-t> <C-\><C-n>:FloatermToggle<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" " Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
-
-" Shortcuts using <leader>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
-
-
-" Sets how many lines of history VIM has to remember
-set history=500
-
-" html emmet
-let g:user_emmet_mode='n'    "only enable normal mode functions
-let g:user_emmet_mode='a'    "enable all function in all mode.
+" Optional: Customize the terminal look
+let g:floaterm_width = 0.8
+let g:floaterm_height = 0.8
+let g:floaterm_title = ' Terminal: $1/$2 '
