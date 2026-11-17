@@ -25,6 +25,7 @@ Plugin 'voldikss/vim-floaterm'
 Plugin 'tpope/vim-surround'
 Plugin 'mattn/emmet-vim'
 Plugin 'Yggdroot/indentLine'
+Plugin 'rust-lang/rust.vim'
 
 call vundle#end()            " Required
 filetype plugin indent on    " Enable loading indent files for specific file types
